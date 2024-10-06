@@ -128,3 +128,38 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const signInAnonymouslyAction = async () => {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.signInAnonymously()
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return redirect("/protected");
+};
+
+export const convertAnonymousAccountAction = async (formData: FormData) => {
+  const supabase = createClient();
+  
+  // ユーザーが匿名かどうかを確認
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user || user.is_anonymous !== true) {
+    return encodedRedirect("error", "/convert-account", "匿名ユーザーのみがアカウントを変換できます");
+  }
+
+  const email = formData.get("email") as string;
+
+  const { data, error } = await supabase.auth.updateUser({
+    email: email,
+  });
+
+  if (error) {
+    return encodedRedirect("error", "/convert-account", error.message);
+  }
+
+  return encodedRedirect("success", "/convert-account", "メールアドレスに送信された確認メールをクリックして、アカウントを更新してください。");
+};
