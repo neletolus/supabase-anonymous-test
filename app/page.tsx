@@ -13,7 +13,7 @@ export default async function Index() {
       <Hero />
       <div className="flex justify-center mt-8">
         <form>
-          <SubmitButton formAction={signInAnonymouslyAction}>匿名でサインイン</SubmitButton>
+          <SubmitButton formAction={signInAnonymouslyAction}>匿名でアカウント登録</SubmitButton>
         </form>
       </div>
     </>
