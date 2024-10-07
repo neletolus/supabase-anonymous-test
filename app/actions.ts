@@ -163,3 +163,40 @@ export const convertAnonymousAccountAction = async (formData: FormData) => {
 
   return encodedRedirect("success", "/convert-account", "メールアドレスに送信された確認メールをクリックして、アカウントを更新してください。");
 };
+
+export const setPasswordAction = async (formData: FormData) => {
+  const supabase = createClient();
+
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (!password || !confirmPassword) {
+    encodedRedirect(
+      "error",
+      "/convert-account/set-password",
+      "Password and confirm password are required",
+    );
+  }
+
+  if (password !== confirmPassword) {
+    encodedRedirect(
+      "error",
+      "/convert-account/set-password",
+      "Passwords do not match",
+    );
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: password,
+  });
+
+  if (error) {
+    encodedRedirect(
+      "error",
+      "/convert-account/set-password",
+      "Password update failed",
+    );
+  }
+
+  encodedRedirect("success", "/convert-account/set-password", "Password updated");
+};
