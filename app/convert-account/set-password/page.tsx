@@ -1,4 +1,4 @@
-import { resetPasswordAction } from "@/app/actions";
+import { setPasswordAction } from "@/app/actions";
 import { FormMessage } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,7 @@ export default function SetPassword({ searchParams }: { searchParams: { message?
         placeholder="パスワードの確認"
         required
       />
-      <SubmitButton formAction={resetPasswordAction}>
+      <SubmitButton formAction={setPasswordAction}>
         パスワードを設定
       </SubmitButton>
       {searchParams.message && <FormMessage message={{ error: searchParams.message }} />}

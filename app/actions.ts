@@ -198,5 +198,7 @@ export const setPasswordAction = async (formData: FormData) => {
     );
   }
 
-  encodedRedirect("success", "/convert-account/set-password", "Password updated");
+  // パスワードを更新したら、ログアウトする
+  await supabase.auth.signOut();
+  encodedRedirect("success", "/sign-in", "Password updated");
 };
